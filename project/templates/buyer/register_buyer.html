@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 12px;
+            margin-top:240px;
+            width: 420px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #6a11cb;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            text-align: left;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
+        }
+
+        textarea {
+            height: 50px; /* Small Textarea for Address */
+            resize: none;
+        }
+
+        button {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 17px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e64a19;
+            transform: scale(1.05);
+        }
+
+        .login-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #6a11cb;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .login-link:hover {
+            color: #4c0b99;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Buyer Registration</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ user_form.as_p }}
+            </div>
+            <div class="form-group">
+                {{ buyer_form.as_p | safe }}
+            </div>
+
+            <!-- Custom small textarea for address -->
+            <div class="form-group">
+                <label for="id_address">Address:</label>
+                <textarea id="id_address" name="address" ></textarea>
+            </div>
+
+            <button type="submit">Register as Buyer</button>
+            <a href="../login" class="login-link">Already have an account? Login</a>
+        </form>
+    </div>
+
+</body>
+</html>

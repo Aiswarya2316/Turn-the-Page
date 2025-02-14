@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Navbar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+        }
+
+        /* Navbar Styling */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #222;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        li {
+            display: inline;
+        }
+
+        li a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            transition: 0.3s ease;
+            border-radius: 5px;
+        }
+
+        li a:hover {
+            background-color: #444;
+        }
+
+        .active {
+            background-color: #04AA6D;
+        }
+
+        /* Page Content */
+        .content {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 36px;
+            color: #222;
+        }
+
+        .content p {
+            font-size: 18px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            ul {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            li a {
+                display: block;
+                text-align: left;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <a href="../buyerhome"><img src="../static/hand-drawn-lettering-card-inscription-turn-page-perfect-abstract-design-greeting-cards-posters-tshirts-banners-print-invitations_317038-852.avif" alt="Logo"></a>
+    </div>
+    <ul>
+        <li><a class="active" href="../">Home</a></li>
+        <li><a href="../add_book">Addbook</a></li>
+        <li><a href="../book_list">Booklist</a></li>
+        <li><a href="../logout">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="content">
+    <h1>Professional Navigation Bar</h1>
+    <p>Scroll down to see how the navigation stays fixed.</p>
+</div>
+
+</body>
+</html>

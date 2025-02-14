@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} - Book Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            padding-top: 80px; /* Prevents content from hiding under fixed navbar */
+        }
+
+        /* Navbar Styling */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #222;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        li {
+            display: inline;
+        }
+
+        li a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            transition: 0.3s ease;
+            border-radius: 5px;
+        }
+
+        li a:hover {
+            background-color: #444;
+        }
+
+        .active {
+            background-color: #04AA6D;
+        }
+
+        /* Book Details Section */
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .author {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #444;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #04AA6D;
+            margin-bottom: 15px;
+        }
+
+        .not-available {
+            color: red;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            ul {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            li a {
+                display: block;
+                text-align: left;
+                padding: 10px;
+            }
+
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <a href="../buyerhome">
+            <img src="../static/hand-drawn-lettering-card-inscription-turn-page-perfect-abstract-design-greeting-cards-posters-tshirts-banners-print-invitations_317038-852.avif" alt="Logo">
+        </a>
+    </div>
+    <ul>
+        <li><a class="active" href="../">Home</a></li>
+        <li><a href="../book_list">Book List</a></li>
+        <li><a href="../logout">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h1>{{ book.title }}</h1>
+    <p class="author">by {{ book.author }}</p>
+    <p class="description">{{ book.description }}</p>
+
+    {% if book.available %}
+        <p class="status">This book is available.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Request this Book</button>
+        </form>
+    {% else %}
+        <p class="not-available">This book is no longer available.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>
