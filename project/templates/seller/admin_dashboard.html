@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #007bff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 5px;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        /* Dashboard Container */
+        .container {
+            width: 90%;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar a {
+                padding: 10px;
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <a href="{% url 'home' %}">🏠 Home</a>
+    <a href="{% url 'logout' %}" class="logout-btn">🚪 Logout</a>
+</div>
+
+<!-- Admin Dashboard Content -->
+<div class="container">
+    <h1>📊 Admin Dashboard</h1>
+
+    <h2>📚 Book List</h2>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Owner</th>
+            <th>Available</th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.owner.username }}</td>
+            <td>{% if book.available %} ✅ Available {% else %} ❌ Unavailable {% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>🔄 Exchange Transactions</h2>
+    <table>
+        <tr>
+            <th>Book</th>
+            <th>Requested By</th>
+            <th>Owner</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+        {% for exchange in exchange_requests %}
+        <tr>
+            <td>{{ exchange.book.title }}</td>
+            <td>{{ exchange.requester.username }}</td>
+            <td>{{ exchange.receiver.username }}</td>
+            <td>{{ exchange.status }}</td>
+            <td>{{ exchange.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

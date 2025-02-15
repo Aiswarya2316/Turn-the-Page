@@ -11,6 +11,8 @@ urlpatterns=[
     path('book/<int:book_id>/', views.book_detail, name='book_detail'),
     path('add_book/', views.add_book, name='add_book'),
     path('manage/<int:request_id>/', views.manage_exchange_request, name='manage_exchange'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+
 ]
 
 

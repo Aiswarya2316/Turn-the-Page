@@ -1,15 +1,16 @@
 from django.shortcuts import render
-
-# Create your views here.
-def home(request):
-   return render(request,'home.html')
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Buyer, Seller
 from .forms import UserRegistrationForm, BuyerRegistrationForm, SellerRegistrationForm
 from django.contrib import messages
+
+
+# Create your views here.
+def home(request):
+   return render(request,'home.html')
+
 
 # Register as Seller
 def register_seller(request):
@@ -31,6 +32,7 @@ def register_seller(request):
     
     return render(request, 'seller/register_seller.html', {'user_form': user_form, 'seller_form': seller_form})
 
+
 # Register as Buyer
 def register_buyer(request):
     if request.method == 'POST':
@@ -51,20 +53,35 @@ def register_buyer(request):
     
     return render(request, 'buyer/register_buyer.html', {'user_form': user_form, 'buyer_form': buyer_form})
 
-# User Login
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from .models import Buyer, Seller
+from django.contrib import messages
+
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
             messages.success(request, "Login successful!")
-            return redirect('buyerhome')  # Change this to your homepage or dashboard
+
+            # Check if the user is a Seller
+            if Seller.objects.filter(user=user).exists():
+                return redirect('admin_dashboard')  # Redirect sellers to a custom dashboard
+            
+            # Otherwise, redirect to buyer home
+            return redirect('buyerhome')
         else:
             messages.error(request, "Invalid username or password!")
     
     return render(request, "login.html")
+
+
 
 # User Logout
 def user_logout(request):
@@ -196,4 +213,20 @@ def manage_exchange_request(request, request_id):
 
 
 # -----------------------------------Admin session-------------------------------------------------#
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Book, ExchangeRequest
 
+@login_required
+def admin_dashboard(request):
+    # Ensure the user is a seller before granting access
+    if not Seller.objects.filter(user=request.user).exists():
+        return redirect('buyerhome')  # Redirect unauthorized users
+
+    books = Book.objects.all()  
+    exchange_requests = ExchangeRequest.objects.all()  
+
+    return render(request, 'seller/admin_dashboard.html', {
+        'books': books,
+        'exchange_requests': exchange_requests
+    })
