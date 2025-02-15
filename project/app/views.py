@@ -82,23 +82,65 @@ def user_logout(request):
 
 
 
-from django.shortcuts import render, redirect
+# ------------------------------------buyer session--------------------------------------------------#
 from django.contrib.auth.decorators import login_required
-from .models import Book, ExchangeRequest
-from .forms import BookForm, ExchangeRequestForm
+from django.shortcuts import render
+from .models import ExchangeRequest
+
+@login_required
+def buyerhome(request):
+    pending_requests = ExchangeRequest.objects.filter(receiver=request.user, status="pending")
+    return render(request, 'buyer/buyerhome.html', {
+        'pending_requests': pending_requests,
+        'user_name': request.user.username  # Pass the user's name
+    })
+
+
 
 def book_list(request):
-    books = Book.objects.filter(available=True)
-    return render(request, 'buyer/book_list.html', {'books': books})
+    query = request.GET.get('q', '')  # Get search query from URL
+    books = Book.objects.filter(available=True)  
+
+    if query:
+        books = books.filter(title__icontains=query)  # Search by title (case insensitive)
+
+    return render(request, 'buyer/book_list.html', {'books': books, 'query': query})
+
+
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .models import Book, ExchangeRequest
 
 @login_required
 def book_detail(request, book_id):
-    book = Book.objects.get(id=book_id)
+    book = get_object_or_404(Book, id=book_id)
+    owner = book.owner  # Get the owner of the book
+
     if request.method == 'POST':
-        # Handle exchange request
-        ExchangeRequest.objects.create(book=book, requester=request.user)
-        return redirect('book_list')
-    return render(request, 'buyer/book_details.html', {'book': book})
+        if book.owner == request.user:
+            messages.error(request, "You cannot exchange your own book.")
+        else:
+            # Ensure the request goes to the book owner
+            existing_request = ExchangeRequest.objects.filter(book=book, requester=request.user, receiver=owner, status="pending").exists()
+
+            if existing_request:
+                messages.warning(request, "You have already requested to exchange this book.")
+            else:
+                ExchangeRequest.objects.create(book=book, requester=request.user, receiver=owner, status="pending")
+                messages.success(request, "Exchange request sent to the book owner!")
+
+        return redirect('book_detail', book_id=book_id)
+
+    return render(request, 'buyer/book_details.html', {'book': book, 'owner': owner})
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Book
+from .forms import BookForm  # ✅ Import the form
 
 @login_required
 def add_book(request):
@@ -115,6 +157,43 @@ def add_book(request):
 
 
 
-def buyerhome(request):
-    return render(request,'buyer/buyerhome.html')
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import ExchangeRequest
+
+@login_required
+def manage_exchange_request(request, request_id):
+    exchange_request = get_object_or_404(ExchangeRequest, id=request_id)
+
+    if request.user != exchange_request.receiver:  # Ensure only the book owner can approve/reject
+        messages.error(request, "You are not authorized to process this request.")
+        return redirect('buyerhome')
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'approve':
+            exchange_request.status = 'approved'
+            exchange_request.book.owner = exchange_request.requester  # Transfer ownership
+            exchange_request.book.available = False  # Mark as unavailable after exchange
+            exchange_request.book.save()
+            exchange_request.status = 'completed'
+            messages.success(request, "✅ Exchange approved! Book ownership transferred.")
+
+        elif action == 'reject':
+            exchange_request.status = 'rejected'
+            messages.error(request, "❌ Exchange request rejected.")
+
+        exchange_request.save()
+        return redirect('buyerhome')  # Redirect to home after approval/rejection
+
+    return render(request, 'buyer/manage_exchange.html', {'exchange_request': exchange_request})
+
+
+
+
+
+
+# -----------------------------------Admin session-------------------------------------------------#
 

@@ -5,26 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Books</title>
     <style>
+        /* General Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #f8f9fa;
+            background-color: #F4F6F8;
             color: #333;
-            padding-top: 80px; /* Prevents content from hiding under fixed navbar */
+            padding-top: 80px;
         }
 
-        /* Navbar Styling */
+        /* Navbar */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #222;
-            padding: 15px 20px;
+            background-color: #1B1F3B;
+            padding: 15px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -33,7 +34,7 @@
         }
 
         .logo img {
-            height: 40px;
+            height: 50px;
             width: auto;
         }
 
@@ -43,118 +44,162 @@
             gap: 20px;
         }
 
-        li {
-            display: inline;
-        }
-
         li a {
             text-decoration: none;
             color: white;
             font-size: 16px;
-            padding: 12px 20px;
-            transition: 0.3s ease;
-            border-radius: 5px;
+            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
         }
 
-        li a:hover {
-            background-color: #444;
+        li a:hover, .active {
+            background-color: #3498DB;
         }
 
-        .active {
-            background-color: #04AA6D;
-        }
-
-        /* Page Content */
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 25px;
+        /* Search Bar */
+        .search-form {
+            display: flex;
+            align-items: center;
+            background: white;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 5px;
+        }
+
+        .search-form input {
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            width: 250px;
+            outline: none;
+        }
+
+        .search-form button {
+            background: #3498DB;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .search-form button:hover {
+            background: #2980B9;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1100px;
+            margin: 90px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         h1 {
             font-size: 28px;
-            color: #222;
-            margin-bottom: 20px;
+            color: #1B1F3B;
+            margin-bottom: 25px;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
+        /* Book Grid */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            padding: 10px;
         }
 
-        li {
-            background: #fff;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: 0.3s ease-in-out;
+        .book-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            position: relative;
         }
 
-        li:hover {
-            transform: translateY(-3px);
-            background: #f0f0f0;
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
 
-        a {
+        .book-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1B1F3B;
             text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-            transition: 0.3s;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        a:hover {
+        .book-title:hover {
             text-decoration: underline;
+            color: #3498DB;
+        }
+
+        .book-author {
+            font-size: 14px;
+            color: #7B8A8B;
+            margin-bottom: 10px;
         }
 
         .details-link {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #007bff;
+            padding: 10px 18px;
+            background-color: #3498DB;
             color: white;
-            border-radius: 5px;
-            text-align: center;
+            border-radius: 6px;
+            text-decoration: none;
             transition: 0.3s;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         .details-link:hover {
-            background-color: #0056b3;
+            background-color: #2980B9;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             nav {
                 flex-direction: column;
-                align-items: flex-start;
-                padding: 10px;
+                align-items: center;
+                padding: 15px;
             }
 
             ul {
                 flex-direction: column;
+                align-items: center;
                 gap: 10px;
                 width: 100%;
-            }
-
-            li a {
-                display: block;
-                text-align: left;
-                padding: 10px;
+                margin-top: 10px;
             }
 
             .container {
                 width: 90%;
                 padding: 20px;
             }
+
+            .book-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+            }
+
+            .search-form input {
+                width: 200px;
+            }
         }
     </style>
 </head>
 <body>
 
+<!-- Navigation Bar -->
 <nav>
     <div class="logo">
         <a href="../buyerhome">
@@ -167,17 +212,25 @@
         <li><a href="../book_list">Book List</a></li>
         <li><a href="../logout">Logout</a></li>
     </ul>
+    <!-- Search Bar -->
+    <form method="GET" action="{% url 'book_list' %}" class="search-form">
+        <input type="text" name="q" placeholder="Search books..." value="{{ request.GET.q }}">
+        <button type="submit">🔍</button>
+    </form>
 </nav>
 
+<!-- Main Content -->
 <div class="container">
-    <h1>Available Books</h1>
-    <ul>
+    <h1>📚 Available Books</h1>
+    <div class="book-grid">
         {% for book in books %}
-            <li>
-                <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by {{ book.author }}
-            </li>
+            <div class="book-card">
+                <a href="{% url 'book_detail' book.id %}" class="book-title">{{ book.title }}</a>
+                <p class="book-author">by {{ book.author }}</p>
+                <a href="{% url 'book_detail' book.id %}" class="details-link">View Details</a>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 
 </body>

@@ -35,8 +35,10 @@ class Book(models.Model):
 class ExchangeRequest(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests')
-    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_requests')
+    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('completed', 'Completed')], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.requester} wants {self.book.title}'
+        return f'{self.requester} wants to exchange {self.book.title} with {self.receiver}'
+

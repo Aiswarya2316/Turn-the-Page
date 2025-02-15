@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ book.title }} - Book Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* General Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #f4f4f4;
-            padding-top: 80px; /* Prevents content from hiding under fixed navbar */
+            background-color: #F4F6F9;
+            padding-top: 80px;
+            text-align: center;
         }
 
         /* Navbar Styling */
@@ -22,124 +25,147 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #222;
+            background-color: #2C3E50;
             padding: 15px 20px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
 
-        .logo img {
-            height: 40px;
-            width: auto;
-        }
-
-        ul {
+        nav ul {
             list-style: none;
             display: flex;
-            gap: 20px;
+            justify-content: center;
+            width: 100%;
         }
 
-        li {
+        nav ul li {
             display: inline;
         }
 
-        li a {
+        nav ul li a {
             text-decoration: none;
             color: white;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             padding: 12px 20px;
             transition: 0.3s ease;
             border-radius: 5px;
         }
 
-        li a:hover {
-            background-color: #444;
-        }
-
         .active {
-            background-color: #04AA6D;
+            background-color: #3498DB;
         }
 
-        /* Book Details Section */
+        /* Book Details Container */
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: 50px auto;
-            background: #fff;
+            background: white;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         h1 {
-            font-size: 28px;
-            color: #222;
-            margin-bottom: 10px;
+            font-size: 26px;
+            color: #2C3E50;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .author {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 15px;
+            font-size: 16px;
+            color: #555;
+            font-style: italic;
+            margin-bottom: 12px;
         }
 
         .description {
-            font-size: 16px;
-            color: #444;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            font-size: 15px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
 
         .status {
             font-weight: bold;
-            color: #04AA6D;
+            color: #27AE60;
+            font-size: 16px;
             margin-bottom: 15px;
         }
 
         .not-available {
             color: red;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
         }
 
-        button {
-            padding: 12px;
-            background-color: #007bff;
+        /* Modern Button */
+        .btn {
+            padding: 12px 20px;
+            background-color: #3498DB;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.3s ease;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .btn:hover {
+            background-color: #2980B9;
+        }
+
+        /* Disabled Button */
+        .btn-disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        /* Form Styling */
+        form {
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .message {
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+
+        .error {
+            background-color: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            ul {
-                flex-direction: column;
-                gap: 10px;
-                width: 100%;
-            }
-
-            li a {
-                display: block;
-                text-align: left;
-                padding: 10px;
-            }
-
             .container {
                 width: 90%;
-                padding: 20px;
+                padding: 25px;
             }
         }
     </style>
@@ -147,31 +173,40 @@
 <body>
 
 <nav>
-    <div class="logo">
-        <a href="../buyerhome">
-            <img src="../static/hand-drawn-lettering-card-inscription-turn-page-perfect-abstract-design-greeting-cards-posters-tshirts-banners-print-invitations_317038-852.avif" alt="Logo">
-        </a>
-    </div>
     <ul>
-        <li><a class="active" href="../">Home</a></li>
-        <li><a href="../book_list">Book List</a></li>
-        <li><a href="../logout">Logout</a></li>
+        <li><a class="active" href="#">Book Details</a></li>
     </ul>
 </nav>
 
+<!-- Book Details Section -->
 <div class="container">
     <h1>{{ book.title }}</h1>
     <p class="author">by {{ book.author }}</p>
     <p class="description">{{ book.description }}</p>
 
     {% if book.available %}
-        <p class="status">This book is available.</p>
-        <form method="post">
+        <p class="status">✅ This book is available.</p>
+    {% else %}
+        <p class="not-available">❌ This book is no longer available.</p>
+    {% endif %}
+
+    <!-- Exchange Request Form -->
+    {% if book.owner != request.user %}
+        <form method="POST">
             {% csrf_token %}
-            <button type="submit">Request this Book</button>
+            <button type="submit" class="btn">Request Exchange</button>
         </form>
     {% else %}
-        <p class="not-available">This book is no longer available.</p>
+        <button class="btn btn-disabled">You Own This Book</button>
+    {% endif %}
+
+    <!-- Display Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
     {% endif %}
 </div>
 

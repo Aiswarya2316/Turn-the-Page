@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add a Book</title>
+    <title>Add a Book | Book Exchange</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* General Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #f8f9fa;
-            padding-top: 80px; /* To prevent content from hiding under fixed navbar */
+            background-color: #F5F7FA;
+            padding-top: 80px;
         }
 
-        /* Navbar Styling */
+        /* Navbar */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #222;
-            padding: 10px 20px;
+            background-color: #2C3E50;
+            padding: 15px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -32,53 +34,45 @@
         }
 
         .logo img {
-            height: 40px;
-            width: auto;
-            border-radius: 5px;
+            height: 50px;
         }
 
-        ul {
+        .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 25px;
         }
 
-        li {
-            display: inline;
-        }
-
-        li a {
+        .nav-links a {
             text-decoration: none;
             color: white;
             font-size: 16px;
-            padding: 12px 20px;
-            transition: 0.3s ease;
+            font-weight: 500;
+            padding: 10px 15px;
             border-radius: 5px;
+            transition: 0.3s ease;
         }
 
-        li a:hover {
-            background-color: #444;
+        .nav-links a:hover, .active {
+            background-color: #3498DB;
         }
 
-        .active {
-            background-color: #04AA6D;
-        }
-
-        /* Page Content */
+        /* Container Styling */
         .container {
-            max-width: 500px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 550px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         h1 {
-            font-size: 28px;
-            color: #222;
-            margin-bottom: 20px;
+            font-size: 30px;
+            color: #2C3E50;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
         /* Form Styling */
@@ -86,23 +80,39 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 16px;
+            background: #F8F9FA;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            background: #fff;
         }
 
         button {
-            padding: 12px;
+            padding: 14px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -115,37 +125,35 @@
         @media (max-width: 768px) {
             nav {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                padding: 15px;
             }
 
-            ul {
+            .nav-links {
                 flex-direction: column;
+                align-items: center;
                 gap: 10px;
                 width: 100%;
-            }
-
-            li a {
-                display: block;
-                text-align: left;
-                padding: 10px;
+                margin-top: 10px;
             }
 
             .container {
                 width: 90%;
-                padding: 15px;
+                padding: 25px;
             }
         }
     </style>
 </head>
 <body>
 
+<!-- Navigation Bar -->
 <nav>
     <div class="logo">
         <a href="../buyerhome">
             <img src="../static/hand-drawn-lettering-card-inscription-turn-page-perfect-abstract-design-greeting-cards-posters-tshirts-banners-print-invitations_317038-852.avif" alt="Logo">
         </a>
     </div>
-    <ul>
+    <ul class="nav-links">
         <li><a class="active" href="../">Home</a></li>
         <li><a href="../add_book">Add Book</a></li>
         <li><a href="../book_list">Book List</a></li>
@@ -153,12 +161,13 @@
     </ul>
 </nav>
 
+<!-- Main Content -->
 <div class="container">
-    <h1>Add a Book</h1>
+    <h1>📖 Add a New Book</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Add Book</button>
+        <button type="submit">📚 Add Book</button>
     </form>
 </div>
 

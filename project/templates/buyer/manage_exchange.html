@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Exchange Request</title>
+    <style>
+        .notification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .success { background-color: #4CAF50; color: white; }
+        .error { background-color: #F44336; color: white; }
+
+        /* Fade out animation */
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    {% if messages %}
+        <div class="notification-box">
+            {% for message in messages %}
+                <div class="notification {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2>Manage Exchange Request</h2>
+    <p>{{ exchange_request.requester.username }} wants to exchange "{{ exchange_request.book.title }}" with you.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="approve">Approve</button>
+        <button type="submit" name="action" value="reject">Reject</button>
+    </form>
+
+    <script>
+        // Show notification and fade out after 3 seconds
+        document.addEventListener("DOMContentLoaded", function() {
+            const notifications = document.querySelectorAll('.notification');
+            notifications.forEach(notification => {
+                notification.style.display = 'block'; // Show notification
+                setTimeout(() => {
+                    notification.style.animation = "fadeOut 1s forwards";
+                    setTimeout(() => notification.remove(), 1000);
+                }, 3000);
+            });
+        });
+    </script>
+
+</body>
+</html>
