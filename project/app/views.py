@@ -102,26 +102,54 @@ def user_logout(request):
 # ------------------------------------buyer session--------------------------------------------------#
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.db.models import Q  # ✅ Import Q for OR filtering
 from .models import ExchangeRequest
 
 @login_required
 def buyerhome(request):
     pending_requests = ExchangeRequest.objects.filter(receiver=request.user, status="pending")
+
+    # Get all completed exchanges involving the logged-in user
+    completed_exchanges = ExchangeRequest.objects.filter(
+        Q(requester=request.user) | Q(receiver=request.user),
+        status="completed"
+    )
+
+    # Extract unique exchanged users and books
+    exchanged_users = set()
+    exchanged_books = []
+
+    for exchange in completed_exchanges:
+        if exchange.requester == request.user:
+            exchanged_users.add(exchange.receiver)
+        else:
+            exchanged_users.add(exchange.requester)
+
+        exchanged_books.append({
+            'book': exchange.book,
+            'with_user': exchange.receiver if exchange.requester == request.user else exchange.requester,
+            'date': exchange.created_at
+        })
+
     return render(request, 'buyer/buyerhome.html', {
         'pending_requests': pending_requests,
-        'user_name': request.user.username  # Pass the user's name
+        'user_name': request.user.username,
+        'exchanged_users': exchanged_users,  # Pass exchanged users list
+        'exchanged_books': exchanged_books  # Pass exchanged books list
     })
 
 
 
+
+
+from django.shortcuts import render
+from .models import Book
+
 def book_list(request):
-    query = request.GET.get('q', '')  # Get search query from URL
-    books = Book.objects.filter(available=True)  
+    books = Book.objects.all()
+    return render(request, 'buyer/book_list.html', {'books': books})
 
-    if query:
-        books = books.filter(title__icontains=query)  # Search by title (case insensitive)
 
-    return render(request, 'buyer/book_list.html', {'books': books, 'query': query})
 
 
 from django.contrib.auth.models import User
@@ -230,3 +258,24 @@ def admin_dashboard(request):
         'books': books,
         'exchange_requests': exchange_requests
     })
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import Book
+
+# Simulating a payment gateway (Replace this with Razorpay/Stripe)
+def buy_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
+    if request.method == "POST":
+        # Simulate payment success (Replace with actual gateway logic)
+        book.available = False  # Mark book as sold
+        book.save()
+        messages.success(request, f'Payment successful! You have bought "{book.title}".')
+        return redirect('payment_success')
+
+    return render(request, 'payment.html', {'book': book})
+
+def payment_success(request):
+    return render(request, 'payment_success.html')

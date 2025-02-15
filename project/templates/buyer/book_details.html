@@ -15,7 +15,7 @@
         }
 
         body {
-            background-color: #F4F6F9;
+            background-color: #f8f9fa;
             padding-top: 80px;
             text-align: center;
         }
@@ -42,7 +42,7 @@
         }
 
         nav ul li {
-            display: inline;
+            margin: 0 15px;
         }
 
         nav ul li a {
@@ -50,7 +50,7 @@
             color: white;
             font-size: 18px;
             font-weight: bold;
-            padding: 12px 20px;
+            padding: 10px 15px;
             transition: 0.3s ease;
             border-radius: 5px;
         }
@@ -116,9 +116,10 @@
             cursor: pointer;
             transition: 0.3s ease;
             font-weight: bold;
-            display: inline-block;
+            display: block;
             text-align: center;
             width: 100%;
+            margin: 10px 0;
         }
 
         .btn:hover {
@@ -139,6 +140,24 @@
             border-radius: 10px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             text-align: left;
+        }
+
+        /* Buy Now Button */
+        .buy-btn {
+            display: inline-block;
+            background-color: #e67e22;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: 0.3s ease;
+            text-align: center;
+            display: block;
+        }
+
+        .buy-btn:hover {
+            background-color: #d35400;
         }
 
         .message {
@@ -196,6 +215,7 @@
             {% csrf_token %}
             <button type="submit" class="btn">Request Exchange</button>
         </form>
+        <a href="{% url 'buy_book' book.id %}" class="buy-btn">💳 Buy Now</a>
     {% else %}
         <button class="btn btn-disabled">You Own This Book</button>
     {% endif %}

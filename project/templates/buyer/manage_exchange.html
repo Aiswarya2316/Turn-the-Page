@@ -4,24 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Exchange Request</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #F4F7FA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #2C3E50;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.3s ease;
+        }
+
+        .approve {
+            background-color: #27AE60;
+            color: white;
+        }
+
+        .approve:hover {
+            background-color: #219150;
+        }
+
+        .reject {
+            background-color: #E74C3C;
+            color: white;
+        }
+
+        .reject:hover {
+            background-color: #C0392B;
+        }
+
+        /* Notification */
         .notification {
             display: none;
             position: fixed;
             top: 20px;
             right: 20px;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 16px;
             font-weight: bold;
-            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             z-index: 1000;
+            animation: fadeIn 0.5s ease;
         }
-        
+
         .success { background-color: #4CAF50; color: white; }
         .error { background-color: #F44336; color: white; }
 
-        /* Fade out animation */
+        /* Fade animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
@@ -29,7 +111,6 @@
     </style>
 </head>
 <body>
-
     {% if messages %}
         <div class="notification-box">
             {% for message in messages %}
@@ -38,21 +119,24 @@
         </div>
     {% endif %}
 
-    <h2>Manage Exchange Request</h2>
-    <p>{{ exchange_request.requester.username }} wants to exchange "{{ exchange_request.book.title }}" with you.</p>
-    
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="action" value="approve">Approve</button>
-        <button type="submit" name="action" value="reject">Reject</button>
-    </form>
+    <div class="container">
+        <h2>📚 Manage Exchange Request</h2>
+        <p><strong>{{ exchange_request.requester.username }}</strong> wants to exchange <strong>"{{ exchange_request.book.title }}"</strong> with you.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="btn-container">
+                <button type="submit" name="action" value="approve" class="btn approve">Approve</button>
+                <button type="submit" name="action" value="reject" class="btn reject">Reject</button>
+            </div>
+        </form>
+    </div>
 
     <script>
-        // Show notification and fade out after 3 seconds
         document.addEventListener("DOMContentLoaded", function() {
             const notifications = document.querySelectorAll('.notification');
             notifications.forEach(notification => {
-                notification.style.display = 'block'; // Show notification
+                notification.style.display = 'block';
                 setTimeout(() => {
                     notification.style.animation = "fadeOut 1s forwards";
                     setTimeout(() => notification.remove(), 1000);
@@ -60,6 +144,5 @@
             });
         });
     </script>
-
 </body>
 </html>

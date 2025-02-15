@@ -12,6 +12,8 @@ urlpatterns=[
     path('add_book/', views.add_book, name='add_book'),
     path('manage/<int:request_id>/', views.manage_exchange_request, name='manage_exchange'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('buy/<int:book_id>/', views.buy_book, name='buy_book'),
+    path('payment-success/', views.payment_success, name='payment_success'),
 
 ]
 
