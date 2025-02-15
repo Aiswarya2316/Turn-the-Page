@@ -226,7 +226,7 @@ def admin_dashboard(request):
     books = Book.objects.all()  
     exchange_requests = ExchangeRequest.objects.all()  
 
-    return render(request, 'seller/admin_dashboard.html', {
+    return render(request, 'admin/admin_dashboard.html', {
         'books': books,
         'exchange_requests': exchange_requests
     })
