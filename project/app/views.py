@@ -30,7 +30,7 @@ def register_seller(request):
         user_form = UserRegistrationForm()
         seller_form = SellerRegistrationForm()
     
-    return render(request, 'seller/register_seller.html', {'user_form': user_form, 'seller_form': seller_form})
+    return render(request, 'admin/register_seller.html', {'user_form': user_form, 'seller_form': seller_form})
 
 
 # Register as Buyer
