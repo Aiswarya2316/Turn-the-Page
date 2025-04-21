@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Books</title>
@@ -205,8 +206,14 @@
 <div class="container">
     <h1>📚Available Books</h1>
     <div class="book-grid">
+        
         {% for book in books %}
             <div class="book-card">
+                {% if book.image %}
+        <img src="{{ book.image.url }}" alt="{{ book.title }}" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+    {% else %}
+        <img src="{% static 'default-book.jpg' %}" alt="Default Book Image" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+    {% endif %}
                 <a href="{% url 'book_detail' book.id %}" class="book-title">{{ book.title }}</a>
                 <p class="book-author">by {{ book.author }}</p>
                 <p class="book-author">Added by: {{ book.owner.username }}</p>

@@ -43,7 +43,7 @@ from .models import Book, ExchangeRequest
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author', 'description']
+        fields = ['title', 'author', 'description','image']
 
 class ExchangeRequestForm(forms.ModelForm):
     class Meta:

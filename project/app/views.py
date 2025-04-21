@@ -190,7 +190,7 @@ from .forms import BookForm  # ✅ Import the form
 @login_required
 def add_book(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, request.FILES)  # ✅ Include request.FILES
         if form.is_valid():
             book = form.save(commit=False)
             book.owner = request.user
